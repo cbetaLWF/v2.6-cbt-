@@ -235,11 +235,18 @@
 
         function downloadImage() {
             const canvas = document.getElementById("canvas");
-            const link = document.createElement("a");
-            link.download = "created_image.png";
-            link.href = canvas.toDataURL("image/png");
-            link.click();
+            canvas.toBlob(blob => {
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "created_image.png";
+
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+            }, "image/png");
         }
+
     </script>
 </body>
 </html>
